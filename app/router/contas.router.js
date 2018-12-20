@@ -1,15 +1,12 @@
-const app = require('express').Router();
+const router = require('express').Router();
 
-const Authentication = require('../middlewares/authentication.middleware');
-const ContasController = require('../controllers/contas.controller');
+const authVerify = require('../middlewares/authentication.middleware');
+const contasController = require('../controllers/contas.controller');
 
-const auth = new Authentication();
-const contasController = new ContasController();
+router.post('/contas', authVerify, contasController.insert)    
+router.get('/contas', authVerify, contasController.find)
+router.get('/contas/:id', authVerify, contasController.findById)
+router.put('/contas/:id', authVerify, contasController.update)
+router.delete('/contas/:id', authVerify, contasController.remove)
 
-app.post('/v1/contas',  contasController.insert)
-app.get('/v1/contas',  contasController.find)
-app.get('/v1/contas/:id',  contasController.findById)
-app.put('/v1/contas/:id',  contasController.update)
-app.delete('/v1/contas/:id',  contasController.remove)
-
-module.exports = app;
+module.exports = router;

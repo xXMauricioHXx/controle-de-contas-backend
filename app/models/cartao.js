@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const cartaoSchema = new mongoose.Schema({
     nome: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     diaVencimento: {
         type: Number,

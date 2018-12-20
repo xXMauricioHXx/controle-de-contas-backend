@@ -1,16 +1,13 @@
-const app = require('express').Router();
+const router = require('express').Router();
 
-const Authentication = require('../middlewares/authentication.middleware');
-const UsuarioController = require('../controllers/usuario.controller');
+const authVerify = require('../middlewares/authentication.middleware');
+const usuarioController = require('../controllers/usuario.controller');
 
-const auth = new Authentication();
-const usuarioController = new UsuarioController();
+router.post('/auth', usuarioController.auth)
+router.post('/usuarios', authVerify, usuarioController.insert)
+router.get('/usuarios', authVerify, usuarioController.find)
+router.get('/usuarios/:id', authVerify, usuarioController.findById)
+router.put('/usuarios/:id', authVerify, usuarioController.update)
+router.delete('/usuarios/:id', authVerify, usuarioController.remove)
 
-app.post('/v1/auth', usuarioController.auth)
-app.post('/v1/usuarios', auth.verify, usuarioController.insert)
-app.get('/v1/usuarios', auth.verify, usuarioController.find)
-app.get('/v1/usuarios/:id', auth.verify, usuarioController.findById)
-app.put('/v1/usuarios/:id', auth.verify, usuarioController.update)
-app.delete('/v1/usuarios/:id', auth.verify, usuarioController.remove)
-
-module.exports = app;
+module.exports = router;

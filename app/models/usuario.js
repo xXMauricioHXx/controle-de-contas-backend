@@ -23,9 +23,10 @@ usuarioSchema.pre('save', function(next) {
     if (!usuario.isModified('senha')) {
         next();
     } else {
-        bcrypt.hash(usuario.senha, 10)
+        bcrypt.hash(usuario.senha, 1)
             .then(hash => {
                 usuario.senha = hash;
+                next();
             })
             .catch(next)
     }

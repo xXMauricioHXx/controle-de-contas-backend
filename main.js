@@ -1,20 +1,20 @@
 const http = require('http');
-const mongoose = require('mongoose');
-
 const app = require('./config/express');
+const mongoDB = require('./config/mongoDB');
 
-mongoose.connect(process.env.MONGODB_URI, {   
-    useNewUrlParser: true
-}).then(() => {
-    console.log('Connected in MongoDB');
-}).catch(err => {
-    console.error(err);
-    process.exit(1);
-})
 
-http.createServer(app).listen(process.env.PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT}`);
-})
+mongoDB.connect()
+    .then(() => {
+        console.log('Connected in MongoDB');
+        http.createServer(app).listen(process.env.PORT, () => {
+            console.log(`Server is running on http://localhost:${process.env.PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        process.exit(1);
+    })
+
 
     
 
