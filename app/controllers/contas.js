@@ -1,6 +1,6 @@
 const Conta = require('../models/contas');
-const CustomError = require('../exceptions/contants.exception');
-const ExceptionsContants = require('../exceptions/contants.exception');
+const AppError = require('../exceptions/appException');
+const ExceptionsContants = require('../exceptions/contantsException');
 
 const find = (req, res, next) => {
     Conta.find()
@@ -17,7 +17,7 @@ const findById = (req, res, next) => {
             if (conta) {
                 res.json(conta);                    
             } else {                   
-                throw new CustomError(ExceptionsContants.CONTA_NAO_ENCONTRADA);
+                throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
             }
             return next();
         })
@@ -45,7 +45,7 @@ const update = (req, res, next) => {
                 res.json(conta)
                 return next();
             } else {
-                throw new CustomError(ExceptionsContants.CONTA_NAO_ENCONTRADA);
+                throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
             }                
         })
         .catch(next)
@@ -53,12 +53,11 @@ const update = (req, res, next) => {
 
 const remove = (req, res, next) => {
     Conta.deleteOne({_id: req.params.id}).exec()
-        .then(cmdResult => {
-            console.log(cmdResult);
+        .then(cmdResult => {            
             if (cmdResult.n){
                 res.sendStatus(204)                    
             }else {
-                throw new CustomError(ExceptionsContants.CONTA_NAO_ENCONTRADA);
+                throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
             }                
             return next();
         })

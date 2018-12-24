@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const Usuario = require('../models/usuario');
-const CustomError = require('../exceptions/contants.exception');
-const AuthenticationError = require('../exceptions/authentication.exception');
-const ExceptionsContants = require('../exceptions/contants.exception');
+const AppError = require('../exceptions/appException');
+const AuthenticationError = require('../exceptions/authenticationException');
+const ExceptionsContants = require('../exceptions/contantsException');
 
 const find = (req, res, next) => {
     Usuario.find()
@@ -17,10 +18,11 @@ const find = (req, res, next) => {
 const findById = (req, res, next) => {
     Usuario.findById(req.params.id)
         .then(usuario => {
-            if (usuario) {                    
+            if (usuario) {       
+                usuario.senha = undefined;             
                 res.json(usuario);                    
             } else {                   
-                throw new CustomError(ExceptionsContants.USUARIO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA);
             }
             return next();
         })
@@ -40,17 +42,18 @@ const insert = (req, res, next) => {
 
 const update = (req, res, next) => {
     const options = {
-        new: true
+        new: true,
+        runValidators: true
     }
 
     Usuario.findByIdAndUpdate(req.params.id, req.body, options)
         .then(usuario => {
-            if (usuario.length) {
+            if (usuario) {
                 usuario.senha = undefined;
                 res.json(usuario)
                 return next();
             } else {
-                throw new CustomError(ExceptionsContants.USUARIO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA);
             }                
         })
         .catch(next)
@@ -62,23 +65,24 @@ const remove = (req, res, next) => {
             if (cmdResult.n){
                 res.sendStatus(204)                    
             }else {
-                throw new CustomError(ExceptionsContants.USUARIO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA);
             }                
             return next();
         })
         .catch(next)
 }
 
-const auth = (req, res, next) => {
-    Usuario.findOne({email: req.body.email, senha: req.body.senha})
-        .then(usuario => {
+const auth = (req, res, next) => {    
+    Usuario.findOne({email: req.body.email})
+        .then( function (usuario) {           
             if (usuario) {
                 const token = jwt.sign({email: usuario.email}, process.env.JWT_SECRET, {
                     expiresIn: 5000
                 });
-                res.json({token: token});                    
+
+                res.json({token: token});                                
             } else {
-                throw new AuthenticationError(ExceptionsContants.USUARIO_NAO_ENCONTRADO);
+                throw new AuthenticationError(ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO);
             }
         })
         .catch(next);

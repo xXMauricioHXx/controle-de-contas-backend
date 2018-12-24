@@ -13,24 +13,39 @@ const usuarioSchema = new mongoose.Schema({
     },
     senha: {
         type: String,
-        required: true,
-        select: false
+        required: true        
     }
 })
 
-usuarioSchema.pre('save', function(next) {
+const hashPassword = (obj, next) => {
+    bcrypt.hash(obj.senha, process.env.SALTROUDS)
+    .then(hash => {
+        obj.senha = hash;
+        next();
+    })
+    .catch(next)
+}
+
+const saveMiddleware = function(next) {
     const usuario = this;
     if (!usuario.isModified('senha')) {
         next();
     } else {
-        bcrypt.hash(usuario.senha, 1)
-            .then(hash => {
-                usuario.senha = hash;
-                next();
-            })
-            .catch(next)
+       hashPassword(usuario, next);
     }
-});
+}
+
+const updateMiddleware = function(next) {
+    if (!this.getUpdate().senha) {
+        next();
+    } else {
+        hashPassword(this.getUpdate(), next);
+    }
+}
+
+// usuarioSchema.pre('save', saveMiddleware);
+// usuarioSchema.pre('findOneAndUpdate', updateMiddleware);
+// usuarioSchema.pre('update', updateMiddleware);
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 module.exports = Usuario;

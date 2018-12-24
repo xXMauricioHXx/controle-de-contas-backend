@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Cartao = require('./cartao');
+const Usuario = require('./usuario');
 
 const contaSchema = new mongoose.Schema({
     descricao: {
@@ -31,11 +33,11 @@ const contaSchema = new mongoose.Schema({
         required: true
     },
     usuario: {
-        type: Object,
+        type: {Usuario},
         required: true
     },
     cartao: {
-        type: Object,
+        type: {Cartao},
         required: true
     }
 })

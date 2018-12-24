@@ -1,4 +1,4 @@
-module.exports = function CustomError(message, extra) {
+module.exports = function AppError(message, extra) {
     Error.captureStackTrace(this, this.constructor);
     this.name = this.constructor.name;
     this.message = message;

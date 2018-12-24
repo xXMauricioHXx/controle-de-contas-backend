@@ -1,6 +1,6 @@
 const Cartao = require('../models/cartao');
-const CustomError = require('../exceptions/contants.exception');
-const ExceptionsContants = require('../exceptions/contants.exception');
+const AppError = require('../exceptions/appException');
+const ExceptionsContants = require('../exceptions/contantsException');
 
 const find = (req, res, next) => {
     Cartao.find()
@@ -14,10 +14,11 @@ const find = (req, res, next) => {
 const findById = (req, res, next) => {
     Cartao.findById(req.params.id)
         .then(cartao => {
+            console.log(cartao);
             if (cartao) {
                 res.json(conta);                    
             } else {                   
-                throw new CustomError(ExceptionsContants.CARTAO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
             }
             return next();
         })
@@ -45,7 +46,7 @@ const update = (req, res, next) => {
                 res.json(cartao)
                 return next();
             } else {
-                throw new CustomError(ExceptionsContants.CARTAO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
             }                
         })
         .catch(next)
@@ -57,7 +58,7 @@ const remove = (req, res, next) => {
             if (cmdResult.n) {
                 res.sendStatus(204)                    
             } else {
-                throw new CustomError(ExceptionsContants.CARTAO_NAO_ENCONTRADO);
+                throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
             }                
             return next();
         })
