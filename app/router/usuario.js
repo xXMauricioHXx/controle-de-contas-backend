@@ -6,25 +6,25 @@ const usuarioController = require('../controllers/usuario');
 
 router.post('/auth', usuarioController.auth)
 router.post('/usuarios', [
-    authVerify,
+    //authVerify,
     usuarioController.insert
 ]);
 router.get('/usuarios', [
-    authVerify,
+    //authVerify,
     usuarioController.find
 ]);
 router.get('/usuarios/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     usuarioController.findById
 ]);
 router.put('/usuarios/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     usuarioController.update
 ]);
 router.delete('/usuarios/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     usuarioController.remove
 ]);

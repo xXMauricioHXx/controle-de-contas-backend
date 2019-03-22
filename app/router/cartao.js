@@ -5,25 +5,25 @@ const validateId = require('../middlewares/validateId');
 const cataoController = require('../controllers/cartao');
 
 router.post('/cartao', [
-    authVerify,
+    //authVerify,
     cataoController.insert
 ]);
 router.get('/cartao', [
-    authVerify,
+    //authVerify,
     cataoController.find
 ]);
 router.get('/cartao/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     cataoController.findById
 ]);
 router.put('/cartao/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     cataoController.update
 ]);
 router.delete('/cartao/:id',[ 
-    authVerify,
+    //authVerify,
     validateId,
     cataoController.remove
 ]);

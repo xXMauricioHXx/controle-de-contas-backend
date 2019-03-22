@@ -6,26 +6,26 @@ const contasController = require('../controllers/contas');
 
 
 router.post('/contas', [
-    authVerify,
+    //authVerify,
     contasController.insert
 ]);    
 router.get('/contas', [
-    authVerify,
+    //authVerify,
     contasController.find
 ]);
 router.get('/contas/:id', [
-    authVerify,
+    //authVerify,
     validateId, 
     contasController.findById
 ]);
 
 router.put('/contas/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     contasController.update
 ]);
 router.delete('/contas/:id', [
-    authVerify,
+    //authVerify,
     validateId,
     contasController.remove
 ]);
