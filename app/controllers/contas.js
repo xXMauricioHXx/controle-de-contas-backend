@@ -31,7 +31,7 @@ const insert = (req, res, next) => {
     let currentDate = moment(contaBody.dataDaCompra);
     for (let i = 0; i < contaBody.parcelas; i++) {
       contaBody.dataDaCompra = currentDate.toISOString();
-      contaBody.mes = currentDate.month();
+      contaBody.mes = currentDate.month() + 1;
       let conta = new Conta(contaBody);
       conta
         .save()
