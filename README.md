@@ -8,7 +8,7 @@ Para iniciar o projeto é necessário fazer o download ou o clone do repositóri
 
 ### Instalação
 
-Pelo terminar vá até a pasta do projeto clonado.
+Pelo terminal vá até a pasta do projeto clonado.
 
 ```
 npm install
