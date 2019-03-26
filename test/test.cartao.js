@@ -1,11 +1,10 @@
 const assert = require('assert');
 const Cartao = require('../src/cartao/cartao.model');
-const mongodb = require('../database/mongodb');
+const mongoose = require('../database');
 
 describe('Cartão', function() {
     before(function (done) {
-        mongodb.connect();
-        const db = mongodb.getConnection();        
+        const db = mongoose.connection;
         db.once('open', function() {          
             done();
         });        
@@ -29,7 +28,7 @@ describe('Cartão', function() {
     });
 
     after(function(done){
-        mongodb.endConnect();
+        mongoose.connection.close();
         done()
     });
 });

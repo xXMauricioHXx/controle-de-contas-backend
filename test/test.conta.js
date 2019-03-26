@@ -2,12 +2,11 @@ const assert = require('assert');
 const Conta = require('../src/conta/contas.model');
 const Cartao = require('../src/cartao/cartao.model');
 const Usuario = require('../src/usuario/usuario.model');
-const mongodb = require('../database/mongodb');
+const mongoose = require('../database');
 
 describe('Conta', function () {
     before(function (done) {
-        mongodb.connect();
-        const db = mongodb.getConnection();
+        const db = mongoose.connection;
         db.once('open', function () {
             done();
         });
@@ -67,7 +66,7 @@ describe('Conta', function () {
     });
 
     after(function (done) {
-        mongodb.endConnect();
+        mongoose.connection.close();
         done()
     });
 });

@@ -1,11 +1,10 @@
 const assert = require('assert');
-const mongodb = require('../database/mongodb');
+const mongoose = require('../database');
 const Usuario = require('../src/usuario/usuario.model');
 
 describe('Usuário', function () {
     before(function (done) {
-        mongodb.connect();
-        const db = mongodb.getConnection();
+        const db = mongoose.connection;
         db.once('open', function () {
             done();
         });
@@ -44,7 +43,7 @@ describe('Usuário', function () {
     });
 
     after(function (done) {
-        mongodb.endConnect();
+        mongoose.connection.close();
         done()
     });
 });

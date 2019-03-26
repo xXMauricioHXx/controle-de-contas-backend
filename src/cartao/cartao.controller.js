@@ -45,7 +45,7 @@ const update = (req, res, next) => {
 
   Cartao.findByIdAndUpdate(req.params.id, req.body, options)
     .then(cartao => {
-      if (cartao.length) {
+      if (cartao) {
         res.json(cartao);
         return next();
       } else {

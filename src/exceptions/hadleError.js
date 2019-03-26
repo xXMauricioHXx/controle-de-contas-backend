@@ -2,11 +2,11 @@ function HandleError(err, req, res, next)
 {   
     this.error = {    
         error: {           
-            message: err.description,
-            code: err.code        
+            message: err.message,
+            code: err.code,
+            name: err.name || "AppError"
         }
     }
-    
     switch(err.name) {
         case 'CastError':
             res.status(err.httpCode).json(this.error)
@@ -30,6 +30,7 @@ function HandleError(err, req, res, next)
         break
     } 
     res.status(404).json(error)
+    next(err);
 }
 
 module.exports = HandleError;
