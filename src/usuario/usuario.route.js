@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const authVerify = require('../middlewares/authentication');
 const validateId = require('../middlewares/validateId');
-const usuarioController = require('../controllers/usuario');
+const usuarioController = require('./usuario.controller');
 
 router.post('/auth', usuarioController.auth)
 router.post('/usuarios', [

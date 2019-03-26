@@ -1,6 +1,6 @@
-const Cartao = require("../models/cartao");
-const AppError = require("../exceptions/appException");
-const ExceptionsContants = require("../exceptions/contantsException");
+const Cartao = require("./cartao.model");
+const AppError = require("../exceptions/AppError");
+const ExceptionsContants = require("../exceptions/ExceptionsConstants");
 
 const find = (req, res, next) => {
   Cartao.find()

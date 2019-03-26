@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const authVerify = require('../middlewares/authentication');
 const validateId = require('../middlewares/validateId');
-const cataoController = require('../controllers/cartao');
+const cataoController = require('./cartao.controller');
 
 router.post('/cartao', [
     //authVerify,

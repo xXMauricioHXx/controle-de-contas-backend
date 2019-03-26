@@ -1,9 +1,9 @@
 const http = require('http');
-const app = require('./config/express');
-const mongoDB = require('./config/mongoDB');
+const app = require('./src/app');
+const mongodb = require('./database/mongodb');
 
 
-mongoDB.connect()
+mongodb.connect()
     .then(() => {
         console.log('Connected in MongoDB');
         http.createServer(app).listen(process.env.PORT || 3000, () => {

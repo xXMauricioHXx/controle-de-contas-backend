@@ -1,10 +1,10 @@
 const assert = require('assert');
-const Cartao = require('../app/models/cartao');
-const mongoDB = require('../config/mongoDB');
+const Cartao = require('../src/cartao/cartao.model');
+const mongodb = require('../database/mongodb');
 
 describe('Cartão', function() {
     before(function (done) {
-        mongoDB.connect();
+        mongodb.connect();
         const db = mongoDB.getConnection();        
         db.once('open', function() {          
             done();

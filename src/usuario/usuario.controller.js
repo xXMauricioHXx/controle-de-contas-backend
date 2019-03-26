@@ -1,10 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const Usuario = require("../models/usuario");
-const AppError = require("../exceptions/appException");
-const AuthenticationError = require("../exceptions/authenticationException");
-const ExceptionsContants = require("../exceptions/contantsException");
+const Usuario = require("./usuario.model");
+const AppError = require("../exceptions/AppError");
+const ExceptionsContants = require("../exceptions/ExceptionsConstants");
 
 const find = (req, res, next) => {
   Usuario.find()
@@ -93,7 +92,7 @@ const auth = (req, res, next) => {
 
         res.status(200).json({ token: token });
       } else {
-        throw new AuthenticationError(
+        throw new AppError(
           ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO
         );
       }

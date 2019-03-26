@@ -1,18 +1,18 @@
 const assert = require('assert');
-const mongoDB = require('../config/mongoDB');
-const Usuario = require('../app/models/usuario');
+const mongodb = require('../database/mongodb');
+const Usuario = require('../src/usuario/usuario.model');
 
-describe('Usuário', function() {
+describe('Usuário', function () {
     before(function (done) {
-        mongoDB.connect();
-        const db = mongoDB.getConnection();        
-        db.once('open', function() {          
+        mongodb.connect();
+        const db = mongodb.getConnection();
+        db.once('open', function () {
             done();
-        });        
+        });
     });
-    
-    describe('Criação de usuario', function() {
-        it('Usuário isNew = false', function() {
+
+    describe('Criação de usuario', function () {
+        it('Usuário isNew = false', function () {
             let usuario = new Usuario({
                 nome: "Mauricio Henrique",
                 email: "mauriciosh558@gmail.com",
@@ -34,17 +34,17 @@ describe('Usuário', function() {
             });
 
             usuario.save()
-                .then(() => {                    
+                .then(() => {
                     assert(!usuario.isNew);
                 })
-                .catch(err => {                    
+                .catch(err => {
                     throw new Error(err.message);
                 })
         });
     });
 
-    after(function(done){
-        mongoDB.endConnect();
-        done()      
+    after(function (done) {
+        mongodb.endConnect();
+        done()
     });
 });

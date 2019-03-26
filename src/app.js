@@ -1,9 +1,8 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
-const errorHandle = require('../app/exceptions/hadleError'); 
-const routes = require('../app/router/index');
+const errorHandle = require('./exceptions/hadleError'); 
+const routes = require('./routes');
 
 //PLUGINS
 app.use(bodyParser.urlencoded({extended: true}));

@@ -1,6 +1,6 @@
-const Conta = require("../models/contas");
-const AppError = require("../exceptions/appException");
-const ExceptionsContants = require("../exceptions/contantsException");
+const Conta = require("./contas.model");
+const AppError = require("../exceptions/AppError");
+const ExceptionsContants = require("../exceptions/ExceptionsConstants");
 const moment = require("moment");
 
 const find = (req, res, next) => {

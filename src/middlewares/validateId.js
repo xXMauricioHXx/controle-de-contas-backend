@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const AppError = require('../exceptions/appException');
-const ExceptionsContants = require('../exceptions/contantsException');
+const AppError = require('../exceptions/AppError');
+const ExceptionsContants = require('../exceptions/ExceptionsConstants');
 
 const validateId = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {

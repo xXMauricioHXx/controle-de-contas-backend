@@ -1,22 +1,16 @@
-const mongoose = require('mongoose');
-//VTW4G7I1ofl1CcGJ
-//admin
-
-//mongodb+srv://admin:VTW4G7I1ofl1CcGJ@cluster0-o6gt5.mongodb.net/test?retryWrites=true
+const mongoose = require("mongoose");
 
 const connect = () => {                                 
-    return mongoose.connect('mongodb+srv://admin:VTW4G7I1ofl1CcGJ@cluster0-o6gt5.mongodb.net/test?retryWrites=true', 
+    return mongoose.connect(process.env.MONGODB_URI, 
         {    
             useCreateIndex: true,
             useNewUrlParser: true
         }
     );    
 }
-
 const getConnection = () => {
     return mongoose.connection;
 }
-
 const endConnect = () => {
     mongoose.connection.close();
 }

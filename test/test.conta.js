@@ -1,27 +1,27 @@
 const assert = require('assert');
-const Conta = require('../app/models/contas');
-const Cartao = require('../app/models/cartao');
-const Usuario = require('../app/models/usuario');
-const mongoDB = require('../config/mongoDB');
+const Conta = require('../src/conta/contas.model');
+const Cartao = require('../src/cartao/cartao.model');
+const Usuario = require('../src/usuario/usuario.model');
+const mongodb = require('../database/mongodb');
 
-describe('Conta', function() {
+describe('Conta', function () {
     before(function (done) {
-        mongoDB.connect();
-        const db = mongoDB.getConnection();        
-        db.once('open', function() {          
+        mongodb.connect();
+        const db = mongodb.getConnection();
+        db.once('open', function () {
             done();
-        });        
+        });
     });
-    
-    describe('Criação de Conta', function() {
-        it('Conta isNew = false', function() {
-            
+
+    describe('Criação de Conta', function () {
+        it('Conta isNew = false', function () {
+
             let cartao = new Cartao({
                 nome: "Mastercard",
                 diaVencimento: 11
-            });            
+            });
             cartao.save();
-            
+
             let usuario = new Usuario({
                 nome: "Joyce Trindade",
                 email: "trindade.soc@gmail.com",
@@ -41,12 +41,12 @@ describe('Conta', function() {
                     dezembro: 1100.00
                 }
             });
-            
+
             usuario.save();
-                        
+
             let conta = new Conta({
                 descricao: "Mc Donalds",
-                valor: 69.00,                
+                valor: 69.00,
                 dataDaCompra: new Date().toISOString(),
                 dataDoCadastro: new Date().toISOString(),
                 mes: 1,
@@ -66,8 +66,8 @@ describe('Conta', function() {
         });
     });
 
-    after(function(done){
-        mongoDB.endConnect();
+    after(function (done) {
+        mongodb.endConnect();
         done()
     });
 });
