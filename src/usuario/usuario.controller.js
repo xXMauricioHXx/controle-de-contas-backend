@@ -23,7 +23,8 @@ const findById = (req, res, next) => {
         res.status(200).json(data[0]);
       } else {
         throw new AppError(
-          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA
+          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA,
+          404
         );
       }
       return next();
@@ -55,7 +56,8 @@ const update = (req, res, next) => {
         return next();
       } else {
         throw new AppError(
-          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA
+          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA,
+          404
         );
       }
     })
@@ -70,7 +72,8 @@ const remove = (req, res, next) => {
         res.sendStatus(204);
       } else {
         throw new AppError(
-          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA
+          ExceptionsContants.USUARIO_NAO_CADASTRADO_NO_SISTEMA,
+          404
         );
       }
       return next();
@@ -92,9 +95,7 @@ const auth = (req, res, next) => {
 
         res.status(200).json({ token: token });
       } else {
-        throw new AppError(
-          ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO
-        );
+        throw new AppError(ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO, 401);
       }
     })
     .catch(next);

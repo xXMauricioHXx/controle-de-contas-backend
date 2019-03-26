@@ -5,7 +5,7 @@ const mongodb = require('../database/mongodb');
 describe('Cartão', function() {
     before(function (done) {
         mongodb.connect();
-        const db = mongoDB.getConnection();        
+        const db = mongodb.getConnection();        
         db.once('open', function() {          
             done();
         });        
@@ -29,7 +29,7 @@ describe('Cartão', function() {
     });
 
     after(function(done){
-        mongoDB.endConnect();
+        mongodb.endConnect();
         done()
     });
 });

@@ -1,7 +1,7 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const errorHandle = require('./exceptions/hadleError'); 
+const ErrorHandle = require('./exceptions/HadleError'); 
 const routes = require('./routes');
 
 //PLUGINS
@@ -13,7 +13,7 @@ app.use(cors());
 app.use(routes);
 
 //EXCEPTIONS
-app.use(errorHandle);
+app.use(ErrorHandle);
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();

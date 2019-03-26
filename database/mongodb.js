@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').load();
+}
 const connect = () => {                                 
-    return mongoose.connect(process.env.MONGODB_URI, 
+    return mongoose.connect(process.env.MONGODB_URI , 
         {    
             useCreateIndex: true,
             useNewUrlParser: true

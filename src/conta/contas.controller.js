@@ -18,7 +18,10 @@ const findById = (req, res, next) => {
       if (conta) {
         res.json(conta);
       } else {
-        throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA,
+          404
+        );
       }
       return next();
     })
@@ -65,7 +68,10 @@ const update = (req, res, next) => {
         res.status(200).json({ contaId: conta._id });
         return next();
       } else {
-        throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA,
+          404
+        );
       }
     })
     .catch(next);
@@ -78,7 +84,10 @@ const remove = (req, res, next) => {
       if (cmdResult.n) {
         res.sendStatus(204);
       } else {
-        throw new AppError(ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA,
+          404
+        );
       }
       return next();
     })

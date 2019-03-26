@@ -1,12 +1,7 @@
-function AppError(name, httpCode, description, isOperational) {
+module.exports = function AppError(errorObj, httpCode) {
     Error.call(this);
     Error.captureStackTrace(this);
-    this.name = name;
     this.httpCode = httpCode;
-    this.description = description;
-    this.isOperational = isOperational;
+    this.description = errorObj.message;
+    this.code = errorObj.code;
 };
-
-AppError.prototype.__proto__ = Error.prototype;
-
-module.exports.AppError = AppError;

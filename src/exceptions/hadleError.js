@@ -1,16 +1,15 @@
 function HandleError(err, req, res, next)
 {   
     this.error = {    
-        error: {
-            name: err.name,
-            message: err.message,
+        error: {           
+            message: err.description,
             code: err.code        
         }
     }
     
     switch(err.name) {
         case 'CastError':
-            res.status(400).json(this.error)
+            res.status(err.httpCode).json(this.error)
             next(err)
         break
         case 'ValidationError':

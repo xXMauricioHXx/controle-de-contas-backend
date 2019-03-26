@@ -1,7 +1,7 @@
-const mongoDB = require('./config/mongoDB')
+const mongodb = require('../database/mongodb')
 
 function connect() {
-    return mongoDB.connect();
+    return mongodb.connect();
 }
 
 async function clear() 

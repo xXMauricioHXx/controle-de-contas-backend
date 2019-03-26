@@ -15,9 +15,12 @@ const findById = (req, res, next) => {
   Cartao.findById(req.params.id)
     .then(cartao => {
       if (cartao) {
-        res.json(conta);
+        res.json(cartao);
       } else {
-        throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA,
+          404
+        );
       }
       return next();
     })
@@ -46,7 +49,10 @@ const update = (req, res, next) => {
         res.json(cartao);
         return next();
       } else {
-        throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA,
+          404
+        );
       }
     })
     .catch(next);
@@ -59,7 +65,10 @@ const remove = (req, res, next) => {
       if (cmdResult.n) {
         res.sendStatus(204);
       } else {
-        throw new AppError(ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA);
+        throw new AppError(
+          ExceptionsContants.CARTAO_NAO_CADASTRADO_NO_SISTEMA,
+          404
+        );
       }
       return next();
     })
