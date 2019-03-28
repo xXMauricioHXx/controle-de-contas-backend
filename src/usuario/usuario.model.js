@@ -1,58 +1,56 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const usuarioSchema = new mongoose.Schema({
-    nome: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    senha: {
-        type: String,
-        required: true,
-        select: false     
-    },
-    saldoMes: {
-        type: Object,
-        required: true
-    }
-})
+  nome: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  senha: {
+    type: String,
+    required: true
+  },
+  saldoMes: {
+    type: Object,
+    required: true
+  }
+});
 
 const hashPassword = (obj, next) => {
-    bcrypt.hash(obj.senha, process.env.SALTROUDS)
+  bcrypt
+    .hash(obj.senha, 10)
     .then(hash => {
-        obj.senha = hash;
-        next();
+      obj.senha = hash;
+      next();
     })
-    .catch(next)
-}
+    .catch(next);
+};
 
 const saveMiddleware = function(next) {
-    const usuario = this;
-    if (!usuario.isModified('senha')) {
-        next();
-    } else {
-       hashPassword(usuario, next);
-    }
-}
+  const usuario = this;
+  if (!usuario.isModified("senha")) {
+    next();
+  } else {
+    hashPassword(usuario, next);
+  }
+};
 
 const updateMiddleware = function(next) {
-    if (!this.getUpdate().senha) {
-        next();
-    } else {
-        hashPassword(this.getUpdate(), next);
-    }
-}
+  if (!this.getUpdate().senha) {
+    next();
+  } else {
+    hashPassword(this.getUpdate(), next);
+  }
+};
 
-// usuarioSchema.pre('save', saveMiddleware);
-// usuarioSchema.pre('findOneAndUpdate', updateMiddleware);
-// usuarioSchema.pre('update', updateMiddleware);
+usuarioSchema.pre("save", saveMiddleware);
+usuarioSchema.pre("findOneAndUpdate", updateMiddleware);
+usuarioSchema.pre("update", updateMiddleware);
 
-const Usuario = mongoose.model('Usuario', usuarioSchema);
+const Usuario = mongoose.model("Usuario", usuarioSchema);
 module.exports = Usuario;
-
-//db.usuarios.insert({"nome":"Mauricio Henrique", "email": "mauriciosh558@gmail.com", "senha":"123456"})          

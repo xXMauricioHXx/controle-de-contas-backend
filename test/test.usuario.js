@@ -1,16 +1,7 @@
 const assert = require('assert');
-const mongodb = require('../database/mongodb');
 const Usuario = require('../src/usuario/usuario.model');
 
 describe('Usuário', function () {
-    before(function (done) {
-        mongodb.connect();
-        const db = mongodb.getConnection();
-        db.once('open', function () {
-            done();
-        });
-    });
-
     describe('Criação de usuario', function () {
         it('Usuário isNew = false', function () {
             let usuario = new Usuario({
@@ -41,10 +32,5 @@ describe('Usuário', function () {
                     throw new Error(err.message);
                 })
         });
-    });
-
-    after(function (done) {
-        mongodb.endConnect();
-        done()
     });
 });

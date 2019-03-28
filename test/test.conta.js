@@ -2,17 +2,8 @@ const assert = require('assert');
 const Conta = require('../src/conta/contas.model');
 const Cartao = require('../src/cartao/cartao.model');
 const Usuario = require('../src/usuario/usuario.model');
-const mongodb = require('../database/mongodb');
 
 describe('Conta', function () {
-    before(function (done) {
-        mongodb.connect();
-        const db = mongodb.getConnection();
-        db.once('open', function () {
-            done();
-        });
-    });
-
     describe('Criação de Conta', function () {
         it('Conta isNew = false', function () {
 
@@ -43,7 +34,6 @@ describe('Conta', function () {
             });
 
             usuario.save();
-
             let conta = new Conta({
                 descricao: "Mc Donalds",
                 valor: 69.00,
@@ -64,10 +54,5 @@ describe('Conta', function () {
                     throw new Error(err);
                 })
         });
-    });
-
-    after(function (done) {
-        mongodb.endConnect();
-        done()
     });
 });
