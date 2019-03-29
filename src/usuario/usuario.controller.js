@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const Usuario = require("./usuario.model");
-const AppError = require("../exceptions/AppError");
-const ExceptionsContants = require("../exceptions/ExceptionsConstants");
+const AppError = require("../exceptions/appError");
+const ExceptionsContants = require("../exceptions/exceptionsConstants");
 
 const find = (req, res, next) => {
   Usuario.find()
@@ -81,24 +81,21 @@ const remove = (req, res, next) => {
     .catch(next);
 };
 
-const auth = (req, res, next) => {
-  Usuario.findOne({ email: req.body.email })
-    .then(function(usuario) {
-      if (usuario) {
-        const token = jwt.sign(
-          { email: usuario.email },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: 5000
-          }
-        );
+const auth = async (req, res, next) => {
+  const { email, senha } = req.body;
+  const user = await Usuario.findOne({ email });
 
-        res.status(200).json({ token: token });
-      } else {
-        throw new AppError(ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO, 401);
-      }
-    })
-    .catch(next);
+  if (!user) {
+    throw new AppError(ExceptionsContants.USUARIO_SEM_PERMISSAO_DE_ACESSO, 401);
+  }
+  if (!(await bcrypt.compare(senha, user.senha))) {
+    throw new AppError(USUARIO_OU_SENHA_INVALIDA, 400);
+  }
+  const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, {
+    expiresIn: 8240
+  });
+  res.status(200).json({ token: token });
+  return next();
 };
 const getUserData = usuarios => {
   return usuarios.map(({ _id, nome, email }) => {

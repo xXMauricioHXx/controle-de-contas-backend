@@ -1,6 +1,6 @@
 const Conta = require("./contas.model");
-const AppError = require("../exceptions/AppError");
-const ExceptionsContants = require("../exceptions/ExceptionsConstants");
+const AppError = require("../exceptions/appError");
+const ExceptionsContants = require("../exceptions/exceptionsConstants");
 const moment = require("moment");
 
 const find = (req, res, next) => {
@@ -28,23 +28,11 @@ const findById = (req, res, next) => {
     .catch(next);
 };
 
-const insert = (req, res, next) => {
-  const contaBody = req.body;
-  if (contaBody.parcelas) {
-    let currentDate = moment(contaBody.dataDaCompra);
-    for (let i = 0; i < contaBody.parcelas; i++) {
-      contaBody.dataDaCompra = currentDate.toISOString();
-      contaBody.mes = currentDate.month() + 1;
-      let conta = new Conta(contaBody);
-      conta
-        .save()
-        .then(conta => {
-          res.status(200).json({ contaId: conta._id });
-          return next();
-        })
-        .catch(next);
-      currentDate = moment(currentDate).add(1, "M");
-    }
+const insert = async (req, res, next) => {
+  const { parcelas } = req.body;
+  if (parcelas) {
+    insertComParcelas(req.body);
+    return next();
   } else {
     let conta = new Conta(req.body);
     conta
@@ -57,6 +45,28 @@ const insert = (req, res, next) => {
   }
 };
 
+const insertComParcelas = conta => {
+  return new Promise((resolve, reject) => {
+    try {
+      const { dataDaCompra, paracelas } = conta;      
+      for (let i = 0; i < paracelas; i++) {
+        conta.dataDaCompra = dataToString(dataDaCompra);
+        conta.mes = currentDate.month() + 1;
+        const novaConta = new Conta(conta);
+        novaConta.save();
+        dataAtual = moment(dataAtual).add(1, "M");
+      }
+    } catch (err) {}
+  });
+};
+
+const dataToString = (data) => {
+  return moment(data).toISOString();
+}
+
+const addMonthInDate  = (data) => {
+  return moment(data).add(1, "M");
+}
 const update = (req, res, next) => {
   const options = {
     new: true
