@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const Usuario = require("./usuario.model");
-const AppError = require("../exceptions/appError");
+const AppError = require("../exceptions/AppError");
 const ExceptionsContants = require("../exceptions/exceptionsConstants");
 
 const find = (req, res, next) => {
