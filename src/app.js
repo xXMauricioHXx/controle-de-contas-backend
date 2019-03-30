@@ -1,7 +1,7 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const ErrorHandle = require('./exceptions/HadleError'); 
+const ErrorHandle = require('./exceptions/hadleError'); 
 const routes = require('./routes');
 
 //PLUGINS
