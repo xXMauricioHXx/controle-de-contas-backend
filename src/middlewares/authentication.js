@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const AppError = require('../exceptions/AppError');
-const ExceptionsContants = require('../exceptions/ExceptionsConstants');
+const AppError = require('../exceptions/appError');
+const ExceptionsContants = require('../exceptions/exceptionsConstants');
 
 const verify = (req, res, next) =>{
 	let token 	= req.headers['x-access-token'];
