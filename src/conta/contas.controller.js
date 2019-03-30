@@ -6,8 +6,8 @@ const moment = require("moment");
 const find = (req, res, next) => {
   Conta.find()
     .then(contas => {
-      res.json(contas);
-      return next;
+      res.status(200).json(contas);
+      return next();
     })
     .catch(next);
 };
@@ -16,7 +16,7 @@ const findById = (req, res, next) => {
   Conta.findById(req.params.id)
     .then(conta => {
       if (conta) {
-        res.json(conta);
+        res.status(200).json(conta);
       } else {
         throw new AppError(
           ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA,
@@ -28,45 +28,53 @@ const findById = (req, res, next) => {
     .catch(next);
 };
 
-const insert = async (req, res, next) => {
+const insert = (req, res, next) => {
   const { parcelas } = req.body;
   if (parcelas) {
-    insertComParcelas(req.body);
-    return next();
-  } else {
-    let conta = new Conta(req.body);
-    conta
-      .save()
-      .then(conta => {
-        res.status(200).json({ contaId: conta._id });
+    insertComParcelas(req.body)
+      .then(() => {
+        res.status(200);
         return next();
       })
       .catch(next);
   }
+  insertSemParcela(req.body)
+    .then(() => {
+      res.status(200);
+      return next();
+    })
+    .catch(next);
 };
 
 const insertComParcelas = conta => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      const { dataDaCompra, paracelas } = conta;      
+      const { paracelas } = conta;
       for (let i = 0; i < paracelas; i++) {
-        conta.dataDaCompra = dataToString(dataDaCompra);
-        conta.mes = currentDate.month() + 1;
+        conta = getContaMesSeguinte(conta);
         const novaConta = new Conta(conta);
-        novaConta.save();
-        dataAtual = moment(dataAtual).add(1, "M");
+        await novaConta.save();
       }
-    } catch (err) {}
+    } catch (err) {
+      reject(err);
+    }
   });
 };
 
-const dataToString = (data) => {
-  return moment(data).toISOString();
-}
+const insertSemParcela = conta => {
+  const novaConta = new Conta(conta);
+  return novaConta.save();
+};
 
-const addMonthInDate  = (data) => {
-  return moment(data).add(1, "M");
-}
+const getContaMesSeguinte = conta => {
+  const contaMesSeguinte = { ...conta };
+  contaMesSeguinte.dataDaCompra = moment(contaMesSeguinte.dataDaCompra)
+    .add(1, "M")
+    .toISOString();
+  contaMesSeguinte.mes = contaMesSeguinte.mes + 1;
+  return contaMesSeguinte;
+};
+
 const update = (req, res, next) => {
   const options = {
     new: true
