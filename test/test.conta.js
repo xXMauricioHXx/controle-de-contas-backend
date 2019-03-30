@@ -37,8 +37,8 @@ describe('Conta', function () {
             let conta = new Conta({
                 descricao: "Mc Donalds",
                 valor: 69.00,
-                dataDaCompra: new Date().toISOString(),
-                dataDoCadastro: new Date().toISOString(),
+                dataDaCompra: "2019-01-01",
+                dataDoCadastro: "2019-01-01",
                 mes: 1,
                 tipoCompra: 'Cartão',
                 usuario: usuario,

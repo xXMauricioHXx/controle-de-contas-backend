@@ -7,6 +7,7 @@ function HandleError(err, req, res, next)
             name: err.name || "AppError"
         }
     }
+    console.log(err);
     switch(err.name) {
         case 'CastError':
             res.status(err.httpCode).json(this.error)

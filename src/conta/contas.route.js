@@ -8,11 +8,13 @@ const contasController = require('./contas.controller');
 router.post('/contas', [
     //authVerify,
     contasController.insert
-]);    
+]);
+
 router.get('/contas', [
     //authVerify,
     contasController.find
 ]);
+
 router.get('/contas/:id', [
     //authVerify,
     validateId, 

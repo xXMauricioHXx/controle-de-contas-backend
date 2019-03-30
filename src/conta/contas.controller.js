@@ -28,39 +28,46 @@ const findById = (req, res, next) => {
     .catch(next);
 };
 
-const insert = (req, res, next) => {
+const insert = async (req, res, next) => {
   const { parcelas } = req.body;
-  if (parcelas) {
-    insertComParcelas(req.body)
-      .then(() => {
-        res.status(200);
-        return next();
-      })
-      .catch(next);
-  }
-  insertSemParcela(req.body)
-    .then(() => {
-      res.status(200);
+  try {
+    if (parcelas) {
+      await insertComParcelas(req.body);
+      res.sendStatus(200);
       return next();
-    })
-    .catch(next);
+    }
+    const conta = await insertSemParcela(req.body);
+    res.json(conta).status(200);
+    return next();
+  } catch(err) {
+    return next(err);
+  }
+  
 };
 
-const insertComParcelas = conta => {
-  return new Promise(async (resolve, reject) => {
+const insertComParcelas = data => {
+  return new Promise((resolve, reject) => {
     try {
-      const { paracelas } = conta;
-      for (let i = 0; i < paracelas; i++) {
-        conta = getContaMesSeguinte(conta);
-        const novaConta = new Conta(conta);
+      getPrestacoesConta(data, data.parcelas).forEach(async (conta) => {
+        let novaConta = new Conta(conta);
         await novaConta.save();
-      }
+      });
+      resolve();
     } catch (err) {
       reject(err);
     }
   });
 };
 
+const getPrestacoesConta = (conta, numeroParcelas) => {
+  let contas = [];  
+  for (let i = 0; i < numeroParcelas; i++) {
+    contas.push(conta);
+    conta = getContaMesSeguinte(conta);
+  }
+  return contas;
+}
+ 
 const insertSemParcela = conta => {
   const novaConta = new Conta(conta);
   return novaConta.save();

@@ -8,6 +8,7 @@ router.post('/cartao', [
     //authVerify,
     cataoController.insert
 ]);
+
 router.get('/cartao', [
     //authVerify,
     cataoController.find
