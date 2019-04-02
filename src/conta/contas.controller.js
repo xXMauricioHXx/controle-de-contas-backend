@@ -65,6 +65,7 @@ const getPrestacoesConta = (conta, numeroParcelas) => {
     contas.push(conta);
     conta = getContaMesSeguinte(conta);
   }
+  console.log(contas);
   return contas;
 }
  
