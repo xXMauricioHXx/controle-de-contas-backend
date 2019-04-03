@@ -8,6 +8,7 @@ const ExceptionsContants = require("../exceptions/exceptionsConstants");
 const find = (req, res, next) => {
   Usuario.find()
     .then(usuarios => {
+      console.log(usuarios);
       const data = getUserData(usuarios);
       res.status(200).json(data);
       return next();
@@ -20,6 +21,7 @@ const findById = (req, res, next) => {
     .then(usuario => {
       if (usuario) {
         const data = getUserData([usuario]);
+        console.log(data);
         res.status(200).json(data[0]);
       } else {
         throw new AppError(
@@ -99,11 +101,7 @@ const auth = async (req, res, next) => {
 };
 const getUserData = usuarios => {
   return usuarios.map(({ _id, nome, email }) => {
-    return {
-      _id,
-      nome,
-      email
-    };
+    return { _id, nome, email };
   });
 };
 

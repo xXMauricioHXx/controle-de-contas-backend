@@ -1,35 +1,38 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const authVerify = require('../middlewares/authentication');
-const validateId = require('../middlewares/validateId');
-const contasController = require('./contas.controller');
+const authVerify = require("../middlewares/authentication");
+const validateId = require("../middlewares/validateId");
+const ContasController = require("./contas.controller");
 
+router.post("/contas", async (req, res, next) => {
+  ContasController.insert(req.body)
+    .then(() => {
+      res.sendStatus(200);
+      return next();
+    })
+    .catch(next);
+});
 
-router.post('/contas', [
-    //authVerify,
-    contasController.insert
+router.get("/contas", [
+  //authVerify,
+  ContasController.find
 ]);
 
-router.get('/contas', [
-    //authVerify,
-    contasController.find
+router.get("/contas/:id", [
+  //authVerify,
+  validateId,
+  ContasController.findById
 ]);
 
-router.get('/contas/:id', [
-    //authVerify,
-    validateId, 
-    contasController.findById
+router.put("/contas/:id", [
+  //authVerify,
+  validateId,
+  ContasController.update
 ]);
-
-router.put('/contas/:id', [
-    //authVerify,
-    validateId,
-    contasController.update
-]);
-router.delete('/contas/:id', [
-    //authVerify,
-    validateId,
-    contasController.remove
+router.delete("/contas/:id", [
+  //authVerify,
+  validateId,
+  ContasController.remove
 ]);
 
 module.exports = router;

@@ -28,27 +28,18 @@ const findById = (req, res, next) => {
     .catch(next);
 };
 
-const insert = async (req, res, next) => {
-  const { parcelas } = req.body;
-  try {
+const insert = (conta) => {
+  const { parcelas } = conta;
     if (parcelas) {
-      await insertComParcelas(req.body);
-      res.sendStatus(200);
-      return next();
+     return insertComParcelas(getPrestacoesConta(conta, parcelas));      
     }
-    const conta = await insertSemParcela(req.body);
-    res.json(conta).status(200);
-    return next();
-  } catch(err) {
-    return next(err);
-  }
-  
+    return insertSemParcela(conta);      
 };
 
-const insertComParcelas = data => {
+const insertComParcelas = contas => {
   return new Promise((resolve, reject) => {
     try {
-      getPrestacoesConta(data, data.parcelas).forEach(async (conta) => {
+      contas.forEach(async (conta) => {
         let novaConta = new Conta(conta);
         await novaConta.save();
       });
@@ -65,7 +56,6 @@ const getPrestacoesConta = (conta, numeroParcelas) => {
     contas.push(conta);
     conta = getContaMesSeguinte(conta);
   }
-  console.log(contas);
   return contas;
 }
  
