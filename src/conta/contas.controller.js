@@ -39,11 +39,11 @@ const insert = (conta) => {
 const insertComParcelas = contas => {
   return new Promise((resolve, reject) => {
     try {
-      contas.forEach(async (conta) => {
+      const result = contas.map(async (conta) => {
         let novaConta = new Conta(conta);
-        await novaConta.save();
+        return await novaConta.save();
       });
-      resolve();
+      resolve(result);
     } catch (err) {
       reject(err);
     }

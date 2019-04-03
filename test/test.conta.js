@@ -1,8 +1,7 @@
 const assert = require("assert");
-const Conta = require("../src/conta/contas.model");
 const Cartao = require("../src/cartao/cartao.model");
 const Usuario = require("../src/usuario/usuario.model");
-const CartaoController = require("../src/conta/contas.controller");
+const ContaController = require("../src/conta/contas.controller");
 
 describe("Conta", function() {
   describe("Criação de Conta", function() {
@@ -34,7 +33,7 @@ describe("Conta", function() {
       });
 
       usuario.save();
-      let conta = new Conta({
+      const body = {
         descricao: "Mc Donalds",
         valor: 69.0,
         dataDaCompra: "2019-01-01",
@@ -44,16 +43,14 @@ describe("Conta", function() {
         usuario: usuario,
         cartao: cartao,
         categoria: "Comida"
-      });
+      };
 
-      conta
-        .save()
-        .then(() => {
-          assert(!conta.isNew);
-        })
-        .catch(err => {
-          throw new Error(err);
-        });
+      ContaController.insert(body).then(conta => {
+        assert(conta.descricao == "Mc Donalds");
+        assert(conta.valor == 69);
+      }).catch(err => {
+        console.error(err);
+      });
     });
   });
 });
