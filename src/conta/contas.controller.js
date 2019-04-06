@@ -12,28 +12,26 @@ const find = (req, res, next) => {
     .catch(next);
 };
 
-const findById = (req, res, next) => {
-  Conta.findById(req.params.id)
+const findById = (id) => {
+  return Conta.findById(id)
     .then(conta => {
       if (conta) {
-        res.status(200).json(conta);
+        return conta;
       } else {
         throw new AppError(
           ExceptionsContants.CONTA_NAO_CADASTRADA_NO_SISTEMA,
           404
         );
       }
-      return next();
     })
-    .catch(next);
 };
 
 const insert = (conta) => {
   const { parcelas } = conta;
-    if (parcelas) {
-     return insertComParcelas(getPrestacoesConta(conta, parcelas));      
-    }
-    return insertSemParcela(conta);      
+  if (parcelas) {
+    return insertComParcelas(getPrestacoesConta(conta, parcelas));
+  }
+  return insertSemParcela(conta);
 };
 
 const insertComParcelas = contas => {
@@ -43,7 +41,7 @@ const insertComParcelas = contas => {
         let novaConta = new Conta(conta);
         return await novaConta.save();
       });
-      resolve(result);
+      resolve(Promise.all(result));
     } catch (err) {
       reject(err);
     }
@@ -51,14 +49,14 @@ const insertComParcelas = contas => {
 };
 
 const getPrestacoesConta = (conta, numeroParcelas) => {
-  let contas = [];  
+  let contas = [];
   for (let i = 0; i < numeroParcelas; i++) {
     contas.push(conta);
     conta = getContaMesSeguinte(conta);
   }
   return contas;
 }
- 
+
 const insertSemParcela = conta => {
   const novaConta = new Conta(conta);
   return novaConta.save();

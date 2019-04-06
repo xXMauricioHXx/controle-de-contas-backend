@@ -4,10 +4,10 @@ const authVerify = require("../middlewares/authentication");
 const validateId = require("../middlewares/validateId");
 const ContasController = require("./contas.controller");
 
-router.post("/contas", async (req, res, next) => {
+router.post("/contas", (req, res, next) => {
   ContasController.insert(req.body)
-    .then(() => {
-      res.sendStatus(200);
+    .then(conta => {
+      res.status(200).json(conta);
       return next();
     })
     .catch(next);
@@ -18,11 +18,11 @@ router.get("/contas", [
   ContasController.find
 ]);
 
-router.get("/contas/:id", [
-  //authVerify,
-  validateId,
-  ContasController.findById
-]);
+router.get("/contas/:id", validateId, (req, res, next) => {
+  ContasController.findById(req.params.id).then(contas => {
+    res.status(200).json(contas);
+  }).catch(next);
+});
 
 router.put("/contas/:id", [
   //authVerify,
